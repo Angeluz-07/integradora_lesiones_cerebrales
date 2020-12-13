@@ -1,0 +1,2 @@
+Python 3.7.1 o una version actualizada
+Postgresql 11.3 o una version actuallizado
