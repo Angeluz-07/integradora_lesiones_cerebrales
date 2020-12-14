@@ -1,0 +1,8 @@
+{% block content  %}
+  {% if user.is_authenticated and user.is_admin %}
+    <h5> {{user.username | upper}} soy admin </h5>
+  {% else %}
+    <h5>soy doctor</h5>
+  {% endif %}  
+  <a href="{% url 'logout' %}">Logout</a>
+{% endblock  %}
