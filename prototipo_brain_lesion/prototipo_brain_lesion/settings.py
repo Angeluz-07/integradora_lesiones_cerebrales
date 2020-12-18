@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 import os
-
+from django.urls import reverse_lazy 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ROOT_PATH = os.path.dirname(__file__)
@@ -27,8 +27,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+AUTH_USER_MODEL = 'diagnostico.Usuario'
 # Application definition
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -37,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'diagnostico',
 ]
 
 MIDDLEWARE = [
@@ -125,3 +127,6 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static")    
 ]
+
+LOGIN_REDIRECT_URL='home'
+LOGOUT_REDIRECT_URL = 'login'
