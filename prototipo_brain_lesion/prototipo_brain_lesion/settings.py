@@ -12,6 +12,24 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 import os
 from django.urls import reverse_lazy 
+
+def check_env_variables_are_defined():
+    env_variables = [
+        'DATABASE_ENGINE',
+        'DATABASE_NAME',
+        'DATABASE_USER',
+        'DATABASE_PASSWORD',
+        'DATABASE_HOST',
+        'DATABASE_PORT'
+    ]
+    for var in env_variables:
+        if var not in os.environ:
+            raise EnvironmentError(
+                "{} is not defined in the environment".format(var)
+            )
+
+check_env_variables_are_defined()
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ROOT_PATH = os.path.dirname(__file__)
@@ -77,12 +95,12 @@ WSGI_APPLICATION = 'prototipo_brain_lesion.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'brain_lesion',
-        'USER': 'postgres',
-        'PASSWORD': 'dario2592alex',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'ENGINE': os.environ.get('DATABASE_ENGINE'),
+        'NAME': os.environ.get('DATABASE_NAME'),
+        'USER': os.environ.get('DATABASE_USER'),
+        'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
+        'HOST': os.environ.get('DATABASE_HOST'),
+        'PORT': os.environ.get('DATABASE_PORT'),
     }
 }
 
