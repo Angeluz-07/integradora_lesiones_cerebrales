@@ -1,0 +1,10 @@
+{% extends "home.html" %}
+
+{% block content %}
+<form action="{% url 'upload' %}" enctype="multipart/form-data" method="post">
+    {% csrf_token %}
+    <input type="file" name="fileMRI">
+    <button class="btn btn-success" type="submit">Segmentar y Diagnosticar</button>
+    <a class="btn btn-danger" href="{% url 'home' %}">Cancelar</a>
+</form>    
+{% endblock %}

@@ -11,5 +11,6 @@
     <h5>{{ user.name | upper }}</h5>
   {% else %}
     <h5>soy doctor</h5>
-  {% endif %}  
+  {% endif %}
+  <a class="btn btn-primary" href="{% url 'upload' %}">Diagnosticar</a>  
 {% endblock  %}
