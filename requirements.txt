@@ -3,3 +3,14 @@ Django==3.1.4
 psycopg2==2.8.6
 pytz==2020.4
 sqlparse==0.4.1
+
+# For models
+Keras==2.4.3
+tensorflow==2.4.0
+
+# Currently(2020/12/21) there is an error in windows with latest version, so 1.19.3 is required
+# Ref : https://developercommunity.visualstudio.com/comments/1252437/view.html
+numpy==1.19.3
+
+# Sitk
+SimpleITK==2.0.2
