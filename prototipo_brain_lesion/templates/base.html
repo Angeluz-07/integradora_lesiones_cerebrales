@@ -6,7 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %} Test Brain Lesion {% endblock %}</title>
     <!--bootstrap-->
-    <link rel="stylesheet" href="{% static '\css\bootstrap.min.css' %}"> 
+    <link rel="stylesheet" href="{% static '\css\bootstrap.min.css' %}">
+
+    <link rel="stylesheet" href="{% static '\papaya\papaya.css' %}">
+    <script src="{% static '\papaya\papaya.js' %}"></script>
+
     {% block specific_styles %}
     {% endblock %}   
 
@@ -48,6 +52,7 @@
                     {% block content %} 
                     {% endblock %} 
                 </div>
+		        <div class="papaya" data-params="params"></div>
             </div>                                   
         </main>
       
