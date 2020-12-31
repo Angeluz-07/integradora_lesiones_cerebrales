@@ -1,0 +1,41 @@
+version: "3"
+
+services: 
+  db:
+    image: postgres:latest
+    container_name: db
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_NAME=$DATABASE_NAME
+      - POSTGRES_USER=$DATABASE_USER
+      - POSTGRES_PASSWORD=$DATABASE_PASSWORD
+    volumes: 
+      - /var/lib/postgresql/data
+          
+  web:
+    build: .
+    volumes: 
+      - .:/code
+    command: python3 manage.py runserver 0.0.0.0:8000
+    ports:
+      - "8000:8000"  
+    depends_on: 
+      - db
+
+  pgadmin4:
+
+    image: $PGADMIN_IMAGE:$PGADMIN_VERSION
+    container_name: pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=$PGADMIN_MAIL
+      - PGADMIN_DEFAULT_PASSWORD=$PGADMIN_PASSWORD
+    ports:
+      - "5555:80"
+    depends_on:
+      - db
+    links:
+      - db
+    restart: unless-stopped    
+
+
