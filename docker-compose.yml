@@ -6,9 +6,9 @@ services:
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_DB=brain_lesion
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=${DATABASE_NAME}
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
     volumes:
       - db_data:/var/lib/postgresql/data
   web:
@@ -19,14 +19,14 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - DATABASE_ENGINE=django.db.backends.postgresql_psycopg2
-      - DATABASE_NAME=brain_lesion
-      - DATABASE_USER=postgres
-      - DATABASE_PASSWORD=postgres
+      - DATABASE_ENGINE=${DATABASE_ENGINE}
+      - DATABASE_NAME=${DATABASE_NAME}
+      - DATABASE_USER=${DATABASE_USER}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
       - DATABASE_HOST=db # same as db service name
-      - DATABASE_PORT=5432
-      - SEGMENTATION_MODEL=clcinet-standard-filtered-059-0.863527-0.828761_TOUCHED.h5
-      - SEGMENTATION_MNI_BRAIN_MASK=mni_icbm152_t1_tal_nlin_sym_09a_mask.nii
+      - DATABASE_PORT=${DATABASE_PORT}
+      - SEGMENTATION_MODEL=${SEGMENTATION_MODEL}
+      - SEGMENTATION_MNI_BRAIN_MASK=${SEGMENTATION_MNI_BRAIN_MASK}
     volumes:
       - .:/code
     depends_on: 
@@ -37,8 +37,8 @@ services:
       - "5051:5051"
       - "5052:80"
     environment:
-      - PGADMIN_DEFAULT_EMAIL=pgadmin4@pgadmin.org
-      - PGADMIN_DEFAULT_PASSWORD=root
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
     volumes:
       - pgadmin_data:/var/lib/pgadmin
     links:
