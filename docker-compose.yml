@@ -2,40 +2,50 @@ version: "3"
 
 services: 
   db:
-    image: postgres:latest
-    container_name: db
+    image: postgres
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_NAME=$DATABASE_NAME
-      - POSTGRES_USER=$DATABASE_USER
-      - POSTGRES_PASSWORD=$DATABASE_PASSWORD
-    volumes: 
-      - /var/lib/postgresql/data
-          
+      - POSTGRES_DB=brain_lesion
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - db_data:/var/lib/postgresql/data
   web:
     build: .
-    volumes: 
-      - .:/code
-    command: python3 manage.py runserver 0.0.0.0:8000
+    command: sh -c "python prototipo_brain_lesion/manage.py makemigrations &&
+                    python prototipo_brain_lesion/manage.py migrate &&
+                    python prototipo_brain_lesion/manage.py runserver 0.0.0.0:8000"
     ports:
-      - "8000:8000"  
+      - "8000:8000"
+    environment:
+      - DATABASE_ENGINE=django.db.backends.postgresql_psycopg2
+      - DATABASE_NAME=brain_lesion
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=postgres
+      - DATABASE_HOST=db # same as db service name
+      - DATABASE_PORT=5432
+      - SEGMENTATION_MODEL=clcinet-standard-filtered-059-0.863527-0.828761_TOUCHED.h5
+      - SEGMENTATION_MNI_BRAIN_MASK=mni_icbm152_t1_tal_nlin_sym_09a_mask.nii
+    volumes:
+      - .:/code
     depends_on: 
       - db
-
-  pgadmin4:
-
-    image: $PGADMIN_IMAGE:$PGADMIN_VERSION
-    container_name: pgadmin4
-    environment:
-      - PGADMIN_DEFAULT_EMAIL=$PGADMIN_MAIL
-      - PGADMIN_DEFAULT_PASSWORD=$PGADMIN_PASSWORD
+  pgadmin:
+    image: dpage/pgadmin4
     ports:
-      - "5555:80"
+      - "5051:5051"
+      - "5052:80"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=pgadmin4@pgadmin.org
+      - PGADMIN_DEFAULT_PASSWORD=root
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    links:
+      - "db:db_server" # use db_server as host name when access with pgadmin
     depends_on:
       - db
-    links:
-      - db
-    restart: unless-stopped    
-
+volumes:
+  db_data:
+  pgadmin_data:
 
