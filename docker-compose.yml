@@ -1,0 +1,51 @@
+version: "3"
+
+services: 
+  db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=${DATABASE_NAME}
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+  web:
+    build: .
+    command: sh -c "python prototipo_brain_lesion/manage.py makemigrations &&
+                    python prototipo_brain_lesion/manage.py migrate &&
+                    python prototipo_brain_lesion/manage.py runserver 0.0.0.0:8000"
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_ENGINE=${DATABASE_ENGINE}
+      - DATABASE_NAME=${DATABASE_NAME}
+      - DATABASE_USER=${DATABASE_USER}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - DATABASE_HOST=db # same as db service name
+      - DATABASE_PORT=${DATABASE_PORT}
+      - SEGMENTATION_MODEL=${SEGMENTATION_MODEL}
+      - SEGMENTATION_MNI_BRAIN_MASK=${SEGMENTATION_MNI_BRAIN_MASK}
+    volumes:
+      - .:/code
+    depends_on: 
+      - db
+  pgadmin:
+    image: dpage/pgadmin4
+    ports:
+      - "5051:5051"
+      - "5052:80"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    links:
+      - "db:db_server" # use db_server as host name when access with pgadmin
+    depends_on:
+      - db
+volumes:
+  db_data:
+  pgadmin_data:
+
