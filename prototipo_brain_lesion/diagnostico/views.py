@@ -2,8 +2,10 @@ from django.shortcuts import render,redirect
 from django.conf import settings
 from django.http import FileResponse
 from django.core.files.storage import FileSystemStorage
+from diagnostico.forms import DiagnosticoForm
+from diagnostico.models import Usuario, Diagnostico
 import os
-
+from django.views.generic import ListView 
 from diagnostico.segmentation import model as segmentation_model
 from diagnostico.segmentation import preprocess_ximg, postprocess_pred
 import SimpleITK as sitk
@@ -39,14 +41,55 @@ def upload_file(request):
         """
         url_mri_mask = fileMRI.name.split('.')[0] +'_maskGenerated' + '.nii.gz'
         ### Segmentation end
-    
+       
         return render(
             request,
-            'cargarMRI.html',
+            'diagnostico.html',
             context = {
                 'original': fileMRI.name,
-                'mask': url_mri_mask
+                'mask': url_mri_mask,
+                'clase_pred':'MCA',
+                'descripcion':'Probabilidad MCA 85%\nLacunar 20%\nControl 0%',
             }
         )
     else:
         return render(request, 'cargarMRI.html')
+
+def save_diagnostic(request):
+    if request.method == 'POST':
+        form=DiagnosticoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('upload')
+        else:
+            form=DiagnosticoForm()           
+    return render(request,'diagnostico.html',{'form':form})
+
+def new_diagnostic(request,nombre_mri,nombre_mask,clase_pred):
+    return render(request,'rechazarMRI.html', context = {
+                'original': nombre_mri,
+                'mask': nombre_mask,
+                'clase_pred': clase_pred,
+            })
+    
+def new_save_diagnostic(request):
+    if request.method == 'POST':
+        form=DiagnosticoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('upload')
+        else:
+            form=DiagnosticoForm()           
+    return render(request,'rechazarMRI.html',{'form':form})
+
+
+class ListarDiagnostico(ListView):
+    model = Diagnostico
+    template_name = "listarDiagnostico.html"
+    context_object_name = 'diagnosticos'
+    queryset=Diagnostico.objects.order_by('id')
+    
+     
+
+
+    

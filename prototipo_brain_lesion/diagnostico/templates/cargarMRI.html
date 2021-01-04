@@ -1,36 +1,13 @@
 {% extends "home.html" %}
 
 {% block content %}
+
 <form action="{% url 'upload' %}" enctype="multipart/form-data" method="post">
     {% csrf_token %}
-    <input type="file" name="fileMRI">
+    <input type="file" name="fileMRI" required>
     <button class="btn btn-success" type="submit">Segmentar y Diagnosticar</button>
     <a class="btn btn-danger" href="{% url 'home' %}">Cancelar</a>
-</form>    
+</form>
+    
 {% endblock %}
 
-{% block specific_scripts %}
-
-    <script type="text/javascript">
-
-        //https://stackoverflow.com/questions/48248333/django-cors-headers-not-working-at-all
-        $.ajaxSetup({
-            beforeSend: function (xhr)
-            {
-                xhr.setRequestHeader("origin","*");
-            }
-        });
-
-        var params = [];
-        {% if original and mask %}
-            var URL_ORIGINAL = "{% url 'serve_file' original %}";
-            var URL_MASK = "{% url 'serve_file' mask %}";
-            
-            console.log(URL_ORIGINAL);
-            console.log(URL_MASK);
-
-            params["images"] = [ URL_ORIGINAL,URL_MASK ];
-            params["{{ mask }}"] = {lut: "Overlay (Negatives)"};
-        {% endif %}
-    </script>
-{% endblock %}
