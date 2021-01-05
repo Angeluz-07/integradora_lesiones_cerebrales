@@ -1,36 +1,28 @@
 {% extends "home.html" %}
 
 {% block content %}
-<form action="{% url 'upload' %}" enctype="multipart/form-data" method="post">
-    {% csrf_token %}
-    <input type="file" name="fileMRI">
-    <button class="btn btn-success" type="submit">Segmentar y Diagnosticar</button>
-    <a class="btn btn-danger" href="{% url 'home' %}">Cancelar</a>
-</form>    
-{% endblock %}
-
-{% block specific_scripts %}
-
-    <script type="text/javascript">
-
-        //https://stackoverflow.com/questions/48248333/django-cors-headers-not-working-at-all
-        $.ajaxSetup({
-            beforeSend: function (xhr)
-            {
-                xhr.setRequestHeader("origin","*");
-            }
-        });
-
-        var params = [];
-        {% if original and mask %}
-            var URL_ORIGINAL = "{% url 'serve_file' original %}";
-            var URL_MASK = "{% url 'serve_file' mask %}";
-            
-            console.log(URL_ORIGINAL);
-            console.log(URL_MASK);
-
-            params["images"] = [ URL_ORIGINAL,URL_MASK ];
-            params["{{ mask }}"] = {lut: "Overlay (Negatives)"};
-        {% endif %}
-    </script>
+<div class="row p-3">
+    <div class="col-12 col-md-10 col-xl-12">
+        <form class="d-flex justify-content-center align-items-center p-1" action="{% url 'upload' %}" enctype="multipart/form-data" method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-12 col-md-10 col-xl-12">
+                    <div class="row p-2">
+                        <div class="col-12 col-md-10 col-xl-12">
+                            <input type="file" name="fileMRI" required>
+                        </div>
+                    </div>
+                    <div class="row p-2">
+                        <div class="col-8 col-md-8 col-xl-8">
+                            <button class="btn btn-success" type="submit">Segmentar y Diagnosticar</button>
+                        </div>
+                        <div class="col-4 col-md-4 col-xl-4">
+                            <a class="btn btn-danger" href="{% url 'home' %}">Cancelar</a>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+        </form>            
+    </div>
+</div>      
 {% endblock %}

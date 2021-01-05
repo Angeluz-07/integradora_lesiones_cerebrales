@@ -1,0 +1,52 @@
+{% extends "home.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-12 col-md-10 col-lg-12">
+        <div class="align-items-center">
+            <table class="table table-hover table-bordered table-sm" id="dataTable">
+                <thead>
+                    <tr class="text-center">
+                        <th>Nombre</th>
+                        <th>Clase Predicha</th>
+                        <th>Clase Corrección</th>
+                        <th>Descripción</th>
+                        <th>Descripción Corrección</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% if diagnosticos %}
+                {% for diagnostico in diagnosticos %}
+                <tr>
+                    <td>{{diagnostico.ruta_Imagen}}</td>
+                    <td>{{diagnostico.clase}}</td>
+                    <td>{{diagnostico.clase_Correccion}}</td>
+                    <td>{{diagnostico.descripcion}}</td>                    
+                    <td>{{diagnostico.descripcion_Correccion}}</td>
+                    <td>
+                        {% if diagnostico.aprobado %}
+                          Aprobado
+                        {% else %}
+                          Rechazado
+                        {% endif %}
+                    </td>
+                    <td class="text-center">
+                      <a href="{% url 'serve_file' diagnostico.ruta_Imagen %}">MRI</a>
+                      <a href="{% url 'serve_file' diagnostico.ruta_ImagenSegmentada %}">MASK</a>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <div class="row p-4 justify-content-center">
+                    <h5 class="text-center col-12 col-sm-12 col-xl-12">No hay ningun registro disponible</h5>
+                </div>
+                {% endif %}
+                </tbody>
+            </table>
+           
+        </div>
+    </div>
+</div>  
+{% endblock %}
