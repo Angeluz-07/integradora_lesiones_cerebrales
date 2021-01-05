@@ -1,12 +1,32 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-<h2>Log In</h2>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Log In</button>
-</form>
-  
+<div class="row p-3">
+  <div class="col-12 col-xl-12">
+    <h4 class="text-center">Log In</h4>
+  </div>
+</div>
+<div class="row p-1">
+  <div class="col-12 col-xl-12">
+    <form class="d-flex justify-content-center align-items-center" method="POST">
+      {% csrf_token %}
+      
+          <div class="row p-1">
+            <div class="col-12 col-xl-12">
+              
+                {{ form.as_p }}
+              
+              <div class="row p-1 ">
+                <div class="col-6 col-xl-6">
+                  <button type="submit" class="btn btn-success">Login in</button>
+                </div>
+                <div class="col-6 col-xl-6">
+                  <a class="btn btn-primary" href="{% url 'home' %}">Cancelar</a>
+                </div>
+              </div>
+            </div>
+          </div>
+    </form>
+  </div>
+</div>
 {% endblock %} 
