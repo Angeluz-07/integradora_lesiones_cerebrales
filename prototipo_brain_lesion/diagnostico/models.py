@@ -8,19 +8,14 @@ class Usuario(AbstractUser):
         return "{}".format(self.username)
 
 class Diagnostico(models.Model):
-    nombre_mri=models.CharField(max_length=50)
-    nombre_mask=models.CharField(max_length=50)
-    clase_predicha=models.CharField(max_length=50)
-    clase_correccion=models.CharField(max_length=50)
-    descripcion=models.CharField(null=True,blank=True,max_length=200)
+    ruta_Imagen=models.CharField(max_length=50)
+    ruta_ImagenSegmentada=models.CharField(max_length=50)
+    clase=models.CharField(max_length=50)
+    descripcion=models.CharField(max_length=200)
+    clase_Correccion=models.CharField(max_length=50)
+    descripcion_Correccion=models.CharField(max_length=200)
     aprobado=models.BooleanField(default=False)
-    fecha=models.DateField(auto_now=True)
+    updated_at=models.DateField(auto_now=True)
+    created_at=models.DateField(auto_now=True)
     usuario=models.ForeignKey(Usuario,null=False,blank=False, on_delete=models.CASCADE)
     
-
-    
-
-    
-        
-    
-            

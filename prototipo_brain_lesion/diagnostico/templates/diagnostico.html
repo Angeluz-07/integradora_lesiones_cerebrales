@@ -20,19 +20,19 @@
                 <div class="row">
                     <div class="col-12 col-xl-12">
                         <label class="form-label">Nombre MRI</label>
-                        <input class="form-control form-control-sm" type="text" name="nombre_mri" value={{original}}>
+                        <input class="form-control form-control-sm" type="text" name="ruta_Imagen" value={{original}}>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12 col-xl-12">
                         <label class="form-label">Nombre Mask_MRI</label>
-                        <input class="form-control form-control-sm" type="text" name="nombre_mask" value={{mask}}>
+                        <input class="form-control form-control-sm" type="text" name="ruta_ImagenSegmentada" value={{mask}}>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12 col-xl-12">
                         <label class="form-label">Clase Lesion</label>
-                        <input class="form-control form-control-sm" type="text" name="clase_predicha" value={{clase_pred}}>
+                        <input class="form-control form-control-sm" type="text" name="clase" value={{clase_pred}}>
                     </div>
                 </div>
                 <div class="row">
@@ -50,7 +50,10 @@
                 </div>
                 <div class="row">
                     <div class="col-12 col-xl-12">
-                       <input type="hidden" name="clase_correccion" value="sin corrección">
+                       <input type="hidden" name="clase_Correccion" value="sin corrección">
+                    </div>
+                    <div class="col-12 col-xl-12">
+                        <input type="hidden" name="descripcion_Correccion" value="sin corrección">
                     </div>
                 </div>
                 <div class="row">
@@ -58,7 +61,7 @@
                         <button type="submit" class="btn btn-success">Aprobar y Guardar</button>
                     </div>
                     <div class="col-3 col-xl-3">
-                        <a class="btn btn-primary" href="{% url 'new_diagnostic' original mask clase_pred %}">Rechazar</a>
+                        <a class="btn btn-primary" href="{% url 'new_diagnostic' original mask clase_pred descripcion %}">Rechazar</a>
                     </div>
                     <div class="col-3 col-xl-3">
                         <a class="btn btn-danger" href="{% url 'upload' %}">Cancelar</a>
@@ -66,7 +69,7 @@
                 </div>                              
             </fieldset>
         </form>
-    </div>         uu
+    </div>        
 </div>
 
 {% endblock %}

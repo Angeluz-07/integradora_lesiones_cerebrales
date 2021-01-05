@@ -65,11 +65,12 @@ def save_diagnostic(request):
             form=DiagnosticoForm()           
     return render(request,'diagnostico.html',{'form':form})
 
-def new_diagnostic(request,nombre_mri,nombre_mask,clase_pred):
+def new_diagnostic(request,nombre_mri,nombre_mask,clase_pred,descripcion):
     return render(request,'rechazarMRI.html', context = {
                 'original': nombre_mri,
                 'mask': nombre_mask,
                 'clase_pred': clase_pred,
+                'descripcion':descripcion, 
             })
     
 def new_save_diagnostic(request):
@@ -88,8 +89,3 @@ class ListarDiagnostico(ListView):
     template_name = "listarDiagnostico.html"
     context_object_name = 'diagnosticos'
     queryset=Diagnostico.objects.order_by('id')
-    
-     
-
-
-    

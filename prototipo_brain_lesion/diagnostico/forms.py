@@ -7,21 +7,24 @@ class DiagnosticoForm(forms.ModelForm):
         model = Diagnostico
 
         fields = [
-            'nombre_mri',
-            'nombre_mask',
-            'clase_predicha',
-            'clase_correccion',
+            'ruta_Imagen',
+            'ruta_ImagenSegmentada',
+            'clase',
             'descripcion',
+            'clase_Correccion',
+            'descripcion_Correccion',
             'aprobado',
-            'usuario'
+            'usuario',
         ]
 
         widgets = {
-            'nombre_mri':forms.TextInput(),
-            'nombre_mask':forms.TextInput(),
-            'clase_predicha':forms.TextInput(),
-            'clase_correccion':forms.TextInput(),
+            'ruta_Imagen':forms.TextInput(),
+            'ruta_ImagenSegmentada':forms.TextInput(),
+            'clase':forms.TextInput(),
             'descripcion':forms.Textarea(),
+            'clase_Correccion':forms.TextInput(),
+            'descripcion_Correccion':forms.Textarea(),
             'aprobado':forms.CheckboxInput(),
-            'usuario':forms.Select()
-        }       
+            'usuario':forms.Select(),
+        }  
+             

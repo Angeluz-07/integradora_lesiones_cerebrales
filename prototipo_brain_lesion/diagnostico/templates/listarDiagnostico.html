@@ -11,7 +11,7 @@
                         <th>Clase Predicha</th>
                         <th>Clase Corrección</th>
                         <th>Descripción</th>
-                        <th>Fecha</th>
+                        <th>Descripción Corrección</th>
                         <th>Estado</th>
                         <th>Acciones</th>
                     </tr>
@@ -20,11 +20,11 @@
                 {% if diagnosticos %}
                 {% for diagnostico in diagnosticos %}
                 <tr>
-                    <td>{{diagnostico.nombre_mri}}</td>
-                    <td>{{diagnostico.clase_predicha}}</td>
-                    <td>{{diagnostico.clase_correccion}}</td>
-                    <td>{{diagnostico.descripcion}}</td>
-                    <td>{{diagnostico.fecha}}</td>
+                    <td>{{diagnostico.ruta_Imagen}}</td>
+                    <td>{{diagnostico.clase}}</td>
+                    <td>{{diagnostico.clase_Correccion}}</td>
+                    <td>{{diagnostico.descripcion}}</td>                    
+                    <td>{{diagnostico.descripcion_Correccion}}</td>
                     <td>
                         {% if diagnostico.aprobado %}
                           Aprobado
@@ -33,8 +33,8 @@
                         {% endif %}
                     </td>
                     <td class="text-center">
-                      <a href="{% url 'serve_file' diagnostico.nombre_mri %}">MRI</a>
-                      <a href="{% url 'serve_file' diagnostico.nombre_mask %}">MASK</a>
+                      <a href="{% url 'serve_file' diagnostico.ruta_Imagen %}">MRI</a>
+                      <a href="{% url 'serve_file' diagnostico.ruta_ImagenSegmentada %}">MASK</a>
                     </td>
                 </tr>
                 {% endfor %}
