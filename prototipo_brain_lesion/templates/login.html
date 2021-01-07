@@ -13,17 +13,8 @@
       
           <div class="row p-1">
             <div class="col-12 col-xl-12">
-              
-                {{ form.as_p }}
-              
-              <div class="row p-1 ">
-                <div class="col-6 col-xl-6">
-                  <button type="submit" class="btn btn-success">Login in</button>
-                </div>
-                <div class="col-6 col-xl-6">
-                  <a class="btn btn-primary" href="{% url 'home' %}">Cancelar</a>
-                </div>
-              </div>
+              {{ form.as_p }}
+              <button type="submit" class="btn btn-success">Login</button>
             </div>
           </div>
     </form>
