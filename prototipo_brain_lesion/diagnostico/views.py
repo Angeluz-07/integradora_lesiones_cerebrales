@@ -53,7 +53,7 @@ def upload_file(request):
             }
         )
     else:
-        return render(request, 'cargarMRI.html')
+        return render(request, 'home.html')
 
 def save_diagnostic(request):
     if request.method == 'POST':
