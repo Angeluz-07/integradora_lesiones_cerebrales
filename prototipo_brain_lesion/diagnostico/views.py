@@ -15,7 +15,7 @@ def serve_file(request, file_name):
     response = FileResponse(open(path, 'rb'))
     return response
 
-def upload_file(request):
+def generate_diagnostic(request):
     if request.method == 'POST' and request.FILES['fileMRI']:
         print('Guardando archivo...')
         fileMRI = request.FILES['fileMRI']
@@ -60,7 +60,7 @@ def save_diagnostic(request):
         form=DiagnosticoForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('upload')
+            return redirect('generate_diagnostic')
         else:
             form=DiagnosticoForm()           
     return render(request,'diagnostico.html',{'form':form})
@@ -78,7 +78,7 @@ def new_save_diagnostic(request):
         form=DiagnosticoForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('upload')
+            return redirect('generate_diagnostic')
         else:
             form=DiagnosticoForm()           
     return render(request,'rechazarMRI.html',{'form':form})
