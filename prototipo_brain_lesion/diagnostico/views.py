@@ -78,17 +78,6 @@ def new_diagnostic(request,nombre_mri,nombre_mask,clase_pred,descripcion):
                 'clase_pred': clase_pred,
                 'descripcion':descripcion, 
             })
-    
-def new_save_diagnostic(request):
-    if request.method == 'POST':
-        form=DiagnosticoForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('generate_diagnostic')
-        else:
-            form=DiagnosticoForm()           
-    return render(request,'rechazarMRI.html',{'form':form})
-
 
 class ListarDiagnostico(ListView):
     model = Diagnostico

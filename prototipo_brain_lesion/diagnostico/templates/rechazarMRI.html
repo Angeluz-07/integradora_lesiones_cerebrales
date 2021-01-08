@@ -6,7 +6,7 @@
         <div class="papaya" data-params="params"></div>
     </div>
     <div class="col-4 col-xl-4">
-        <form action="{% url 'new_save_diagnostic' %}" method="POST">
+        <form action="{% url 'save_diagnostic' %}" method="POST">
             {% csrf_token %}
             <fieldset>
                 <div class="row" hidden>
