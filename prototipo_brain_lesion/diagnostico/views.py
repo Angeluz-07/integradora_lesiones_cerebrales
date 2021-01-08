@@ -33,8 +33,8 @@ def generate_mask(xpath, output_path):
     sitk.WriteImage(output, output_path)
 
 
-def diagnostic(request):
-    if request.method == 'POST' and request.FILES['fileMRI']:
+def diagnostic(request, type_:str):
+    if type_ == 'new' and request.method == 'POST' and request.FILES['fileMRI']:
         fileMRI = request.FILES['fileMRI']
         mri_file_name = fileMRI.name
 
@@ -57,7 +57,11 @@ def diagnostic(request):
             'descripcion':'Probabilidad MCA 85%\nLacunar 20%\nControl 0%',
         }
 
+        request.session['diagnostic_values'] = context
         return render(request,'diagnostico.html',context=context)
+    elif type_ == 'update':
+        context = request.session['diagnostic_values']
+        return render(request,'rechazarMRI.html',context=context)
     else:
         return render(request, 'home.html')
 
@@ -66,18 +70,10 @@ def save_diagnostic(request):
         form=DiagnosticoForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('diagnostic')
+            return redirect('diagnostic',type_='new')
         else:
             form=DiagnosticoForm()           
     return render(request,'diagnostico.html',{'form':form})
-
-def new_diagnostic(request,nombre_mri,nombre_mask,clase_pred,descripcion):
-    return render(request,'rechazarMRI.html', context = {
-                'original': nombre_mri,
-                'mask': nombre_mask,
-                'clase_pred': clase_pred,
-                'descripcion':descripcion, 
-            })
 
 class ListarDiagnostico(ListView):
     model = Diagnostico
