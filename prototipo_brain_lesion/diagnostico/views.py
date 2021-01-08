@@ -33,7 +33,7 @@ def generate_mask(xpath, output_path):
     sitk.WriteImage(output, output_path)
 
 
-def generate_diagnostic(request):
+def diagnostic(request):
     if request.method == 'POST' and request.FILES['fileMRI']:
         fileMRI = request.FILES['fileMRI']
         mri_file_name = fileMRI.name
@@ -66,7 +66,7 @@ def save_diagnostic(request):
         form=DiagnosticoForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('generate_diagnostic')
+            return redirect('diagnostic')
         else:
             form=DiagnosticoForm()           
     return render(request,'diagnostico.html',{'form':form})
