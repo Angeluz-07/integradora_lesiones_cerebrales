@@ -61,7 +61,7 @@ def diagnostic(request, type_:str):
         return render(request,'diagnostico.html',context=context)
     elif type_ == 'update':
         context = request.session['diagnostic_values']
-        return render(request,'rechazarMRI.html',context=context)
+        return render(request,'diagnostico.html',context=context)
     else:
         return render(request, 'home.html')
 

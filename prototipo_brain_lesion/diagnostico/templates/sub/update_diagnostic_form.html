@@ -1,0 +1,62 @@
+ <form action="{% url 'save_diagnostic' %}" method="POST">
+    {% csrf_token %}
+    <fieldset>
+        <div class="row" hidden>
+            <div class="col-12 col-xl-12">
+                <label class="form-label">Usuario</label>
+                <select class="form-select form-select-sm" name="usuario">
+                    <option value="{{user.id}}" selected>{{user}}</option>                                                          
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-xl-12">
+                <input class="form-control form-control-sm" type="hidden" name="ruta_Imagen" value={{original}}>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-xl-12">
+                <input class="form-control form-control-sm" type="hidden" name="ruta_ImagenSegmentada" value={{mask}}>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-xl-12">
+                <input class="form-control form-control-sm" type="hidden" name="clase" value={{clase_pred}}>
+            </div>
+        </div>
+        <div class="row my-2">
+            <div class="col-12 col-xl-12">
+                <label class="form-label">Lesión : </label>
+                <select class="form-select form-select-sm form-control" name="clase_Correccion" required>
+                    <option value="" selected></option>
+                    <option value="MCA">MCA</option>
+                    <option value="Lacunar">Lacunar</option>                         
+                </select>
+            </div>
+        </div>
+        <div class="row my-2">
+            <div class="col-12 col-xl-12">
+                <label class="form-label">Descripción corrección : </label>
+                <textarea class="form-control" name="descripcion_Correccion" cols="70" rows="5" required></textarea>
+                <!--p class="text-center">Coloque un comentario sobre el nuevo diagnostico</p-->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-xl-12">
+                <input class="form-check-input" type="checkbox" name="aprobado" hidden>
+            </div>
+            <div class="col-12 col-xl-12">
+                <input class="form-control form-control-sm" type="hidden" name="descripcion" value={{descripcion}}>
+            </div>
+        </div>
+        <div class="row my-2">
+            <div class="col-6 col-xl-6">
+                <button type="submit" class="btn btn-success">Guardar</button>
+            </div>
+            <div class="col-6 col-xl-6">
+                <a class="btn btn-primary" href="{% url 'home' %}">Cancelar</a>
+            </div>
+        </div>       
+
+    </fieldset>
+</form>
