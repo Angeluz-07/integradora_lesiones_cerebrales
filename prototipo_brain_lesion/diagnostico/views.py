@@ -15,43 +15,49 @@ def serve_file(request, file_name):
     response = FileResponse(open(path, 'rb'))
     return response
 
+def remove_file_if_exists(file_name):
+    file_path = os.path.join(settings.MEDIA_ROOT,file_name)
+    if os.path.exists(file_path):
+        os.remove(file_path)
+
+def generate_mask(xpath, output_path):
+    print("[1] Leyendo imagen...")
+    ximg = sitk.ReadImage(xpath, sitk.sitkFloat32)
+    print("[2] Preprocesando imagen...")
+    x3d =  preprocess_ximg(ximg)
+    print("[3] Model.predict()...")
+    raw_pred = segmentation_model.predict(x3d,batch_size=8,verbose=1)
+    print("[4] Postprocesando prediccion...")
+    output = postprocess_pred(raw_pred, xpath)
+    print("[5] Guardando segmento...")
+    sitk.WriteImage(output, output_path)
+
+
 def generate_diagnostic(request):
     if request.method == 'POST' and request.FILES['fileMRI']:
-        print('Guardando archivo...')
         fileMRI = request.FILES['fileMRI']
-        if os.path.exists(os.path.join(settings.MEDIA_ROOT,fileMRI.name)):
-            os.remove(os.path.join(settings.MEDIA_ROOT,fileMRI.name)) 
-        fs = FileSystemStorage()   
-        filename = fs.save(fileMRI.name,fileMRI)
-        file_url = fs.url(filename)
-        xpath=os.path.join(settings.MEDIA_ROOT,fileMRI.name)
-        
-        ### Segmentation start
-        xpath = xpath
-        output_path = os.path.join(settings.MEDIA_ROOT, fileMRI.name.split('.')[0] +'_maskGenerated' + '.nii.gz')
-        print(xpath)
-        print(output_path)
-        print(fs.url(fileMRI.name))
-        """
-        ximg = sitk.ReadImage(xpath, sitk.sitkFloat32)
-        x3d =  preprocess_ximg(ximg)
-        raw_pred = segmentation_model.predict(x3d,batch_size=8,verbose=1)
-        output = postprocess_pred(raw_pred, xpath)
-        sitk.WriteImage(output, output_path)
-        """
-        url_mri_mask = fileMRI.name.split('.')[0] +'_maskGenerated' + '.nii.gz'
-        ### Segmentation end
-       
-        return render(
-            request,
-            'diagnostico.html',
-            context = {
-                'original': fileMRI.name,
-                'mask': url_mri_mask,
-                'clase_pred':'MCA',
-                'descripcion':'Probabilidad MCA 85%\nLacunar 20%\nControl 0%',
-            }
-        )
+        mri_file_name = fileMRI.name
+
+        print('Guardando archivo...')
+        remove_file_if_exists(mri_file_name)
+        FileSystemStorage().save(mri_file_name, fileMRI)
+        print('Archivo guardado :', f'{mri_file_name}')
+
+        print("Segmentando Lesion...")
+        mri_file_path = os.path.join(settings.MEDIA_ROOT, mri_file_name)
+        mask_file_name = mri_file_name.split('.')[0] +'_maskGenerated' + '.nii.gz'
+        mask_file_path = os.path.join(settings.MEDIA_ROOT, mask_file_name)
+        #generate_mask(mri_file_path, mask_file_path)
+        print("Segmento generado : ", f'{mask_file_name}')
+
+        context = {
+            'original': mri_file_name,
+            'mask': mask_file_name,
+            'clase_pred': 'MCA',
+            'descripcion':'Probabilidad MCA 85%\nLacunar 20%\nControl 0%',
+        }
+
+        return render(request,'diagnostico.html',context=context)
     else:
         return render(request, 'home.html')
 
