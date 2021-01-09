@@ -8,6 +8,10 @@ import os
 from django.views.generic import ListView 
 from diagnostico.segmentation import model as segmentation_model
 from diagnostico.segmentation import preprocess_ximg, postprocess_pred
+from diagnostico.classification import model as classification_model
+from diagnostico.classification import preprocess as classification_preprocess
+from diagnostico.classification import probs, predicted_class
+
 import SimpleITK as sitk
 
 def serve_file(request, file_name):
@@ -50,11 +54,17 @@ def diagnostic(request, type_:str):
         #generate_mask(mri_file_path, mask_file_path)
         print("Segmento generado : ", f'{mask_file_name}')
 
+        print("Clasificando Lesion...")
+        feature_row = classification_preprocess(mri_file_path,mask_file_path)
+        _probs = probs(classification_model, feature_row)
+        _predicted_class = predicted_class(classification_model, feature_row)
+        print("Classificacion generada : ", _probs, _predicted_class)
+
         context = {
             'original': mri_file_name,
             'mask': mask_file_name,
-            'clase_pred': 'MCA',
-            'descripcion':'Probabilidad MCA 85%\nLacunar 20%\nControl 0%',
+            'clase_pred': _predicted_class,
+            'descripcion': _probs,
         }
 
         request.session['diagnostic_values'] = context
