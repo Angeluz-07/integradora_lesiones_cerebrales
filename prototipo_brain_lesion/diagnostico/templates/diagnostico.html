@@ -30,6 +30,12 @@
             }
         });
 
+        // Custom color table for mask overlay. See papaya.js docs.
+        var redMaskColorTable = function() { };
+        redMaskColorTable.prototype.lookupRed = (screenVal, imageVal) => screenVal == 255 ? 255 : 0;
+        redMaskColorTable.prototype.lookupGreen = (screenVal, imageVal) => 0 ;
+        redMaskColorTable.prototype.lookupBlue = (screenVal, imageVal) => 0 ;
+
         var params = [];
         {% if original and mask %}
             var URL_ORIGINAL = "{% url 'serve_file' original %}";
@@ -39,7 +45,7 @@
             console.log(URL_MASK);
 
             params["images"] = [ URL_ORIGINAL,URL_MASK ];
-            params["{{ mask }}"] = {lut: "Overlay (Negatives)"};
+            params["{{ mask }}"] = {lut: new redMaskColorTable()};
         {% endif %}
     </script>
 {% endblock %}
