@@ -2,10 +2,16 @@
 
 {% block content %}
 <div class="row py-3">
-    <div class="col-8 col-xl-8">
+    <div class="col-1">
+        <label class="switch mt-5 mx-4">
+          <input id="toggle-mask" type="checkbox" class="default">
+          <span class="slider round"></span>
+        </label>
+    </div>
+    <div class="col-7">
         <div class="papaya" data-params="params"></div>
     </div>
-    <div class="col-4 col-xl-4">
+    <div class="col-4">
 
         {% if request.resolver_match.kwargs.type_ == 'new' %}
             {% include 'sub/new_diagnostic_form.html' %}
@@ -30,7 +36,14 @@
             }
         });
 
+        // Custom color table for mask overlay. See papaya.js docs.
+        var redMaskColorTable = function() { };
+        redMaskColorTable.prototype.lookupRed = (screenVal, imageVal) => screenVal == 255 ? 255 : 0;
+        redMaskColorTable.prototype.lookupGreen = (screenVal, imageVal) => 0 ;
+        redMaskColorTable.prototype.lookupBlue = (screenVal, imageVal) => 0 ;
+
         var params = [];
+        params['showControlBar'] = true;
         {% if original and mask %}
             var URL_ORIGINAL = "{% url 'serve_file' original %}";
             var URL_MASK = "{% url 'serve_file' mask %}";
@@ -39,7 +52,20 @@
             console.log(URL_MASK);
 
             params["images"] = [ URL_ORIGINAL,URL_MASK ];
-            params["{{ mask }}"] = {lut: "Overlay (Negatives)"};
+            params["{{ mask }}"] = {lut: new redMaskColorTable()};
         {% endif %}
+
+        var maskHidden = false;
+        var containerIndex = 0;
+        var imageIndex = 1;
+        $('#toggle-mask').click(function(){
+            if (maskHidden) {
+                maskHidden = false;
+                papaya.Container.showImage(containerIndex, imageIndex);
+            } else {
+                maskHidden = true;
+                papaya.Container.hideImage(containerIndex, imageIndex);
+            }
+        });
     </script>
 {% endblock %}

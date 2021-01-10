@@ -7,5 +7,5 @@ urlpatterns = [
     path('diagnostic/<str:type_>',diagnostic, name='diagnostic'),
     path('save/',save_diagnostic,name='save_diagnostic'),
     path('listar/',ListarDiagnostico.as_view(),name='listDiagnostic'),
-    path('file/<str:file_name>/',serve_file, name='serve_file'),
+    path('file/<str:file_name>',serve_file, name='serve_file'),
 ]
