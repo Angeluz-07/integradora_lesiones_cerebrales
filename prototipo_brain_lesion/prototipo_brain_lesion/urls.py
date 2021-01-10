@@ -19,8 +19,9 @@ from django.urls import path, include
  
 
 urlpatterns = [
+    
     path('',include('diagnostico.urls')),
-    path('login/',LoginView.as_view(template_name='login.html'),name="login"),
+    path('',LoginView.as_view(template_name='login.html'),name="login"),
     path('logout/', LogoutView.as_view(next_page='login'), name='logout'),
     path('admin/', admin.site.urls),
 ]
