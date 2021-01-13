@@ -10,7 +10,7 @@ from diagnostico.segmentation import model as segmentation_model
 from diagnostico.segmentation import preprocess_ximg, postprocess_pred
 from diagnostico.classification import model as classification_model
 from diagnostico.classification import preprocess as classification_preprocess
-from diagnostico.classification import probs, predicted_class
+from diagnostico.classification import probs_formatted, predicted_class
 
 import SimpleITK as sitk
 
@@ -56,15 +56,15 @@ def diagnostic(request, type_:str):
 
         print("Clasificando Lesion...")
         feature_row = classification_preprocess(mri_file_path,mask_file_path)
-        _probs = probs(classification_model, feature_row)
+        _probs_formatted = probs_formatted(classification_model, feature_row)
         _predicted_class = predicted_class(classification_model, feature_row)
-        print("Classificacion generada : ", _probs, _predicted_class)
+        print("Classificacion generada : ", _probs_formatted, _predicted_class)
 
         context = {
             'original': mri_file_name,
             'mask': mask_file_name,
             'clase_pred': _predicted_class,
-            'descripcion': _probs,
+            'descripcion': _probs_formatted,
         }
 
         request.session['diagnostic_values'] = context

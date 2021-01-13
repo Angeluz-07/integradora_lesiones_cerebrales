@@ -71,6 +71,14 @@ def probs(model, feature_row):
         'MCA' : raw_pred[0][1]
     }
 
+def probs_formatted(model, feature_row):
+  raw_pred = model.predict_proba([feature_row])
+  result = f"""
+  Lacunar con una probabilidad de {raw_pred[0][0] * 100}% ,
+  MCA con una probabilidad de {raw_pred[0][1] * 100}%
+  """
+  return result
+
 def predicted_class(model, feature_row):
     raw_pred = model.predict([feature_row])
     CLASSES =  {
