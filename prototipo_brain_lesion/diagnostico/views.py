@@ -83,15 +83,30 @@ def diagnostic(request, type_:str):
             'mask': mask_file_name,
             'clase_pred': _predicted_class,
             'descripcion': _probs_formatted,
+            'view_type' : 'create'
         }
 
         request.session['diagnostic_values'] = context
         return render(request,'diagnostico.html',context=context)
     elif type_ == 'update':
         context = request.session['diagnostic_values']
+        context['view_type'] = 'update'
         return render(request,'diagnostico.html',context=context)
     else:
         return render(request, 'home.html')
+
+
+def diagnostic_read(request, id:str):
+    from .models import Diagnostico
+    diagnostic = Diagnostico.objects.get(id=id)
+    context = {
+        'original': diagnostic.ruta_Imagen,
+        'mask': diagnostic.ruta_ImagenSegmentada,
+        'clase_pred': diagnostic.clase,
+        'descripcion': diagnostic.descripcion,
+        'view_type' : 'read'
+    }
+    return render(request,'diagnostico.html',context=context)
 
 def save_diagnostic(request):
     if request.method == 'POST':

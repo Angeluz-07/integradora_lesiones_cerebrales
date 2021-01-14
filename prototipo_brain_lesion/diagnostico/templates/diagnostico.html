@@ -13,10 +13,12 @@
     </div>
     <div class="col-4">
 
-        {% if request.resolver_match.kwargs.type_ == 'new' %}
-            {% include 'sub/new_diagnostic_form.html' %}
-        {% else %}
+        {% if view_type == 'create' %}
+            {% include 'sub/create_diagnostic_form.html' %}
+        {% elif view_type == 'update' %}
             {% include 'sub/update_diagnostic_form.html' %}
+        {% elif view_type == 'read' %}
+            {% include 'sub/read_diagnostic_form.html' %}
         {% endif%}
         
     </div>        
@@ -67,5 +69,10 @@
                 papaya.Container.hideImage(containerIndex, imageIndex);
             }
         });
+
+        $('#read_form').on('submit', function(e){
+            e.preventDefault();
+        });
+
     </script>
 {% endblock %}

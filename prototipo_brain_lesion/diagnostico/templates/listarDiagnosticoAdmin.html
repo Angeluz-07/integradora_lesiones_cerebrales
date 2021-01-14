@@ -32,6 +32,7 @@
                     <td>{{diagnostico.descripcion_Correccion}}</td>
                     <td>{{diagnostico.usuario}}</td>
                     <td class="text-center">
+                     <a href="{% url 'diagnostic_read' diagnostico.id %}">see</a>
                       <a href="{% url 'serve_file' diagnostico.ruta_Imagen %}">MRI</a>
                       <a href="{% url 'serve_file' diagnostico.ruta_ImagenSegmentada %}">MASK</a>
                     </td>
