@@ -39,13 +39,13 @@
 
 
   <div class="row py-3">
-      <div class="col-1">
+      <!--div class="col-1">
           <label class="switch mt-5 mx-4">
             <input id="toggle-mask" type="checkbox" class="default">
             <span class="slider round"></span>
           </label>
-      </div>
-      <div class="col-7">
+      </div-->
+      <div class="col-8">
           <div class="papaya" data-params="params"></div>
       </div>
       <div class="col-4">
@@ -96,6 +96,7 @@
               title: 'Archivo Inválido',
               text: 'Por favor, verifique que el archivo tenga extensión .nii o .nii.gz',
             })
+            $("#fileMRI").val('');
             return false;
           }
 
