@@ -3,38 +3,52 @@
 {% block navbar %}
             <section>
                 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-                    <a class="navbar-brand px-4" href="#">Brain Lesion App</a>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                    <a class="navbar-brand px-4" href="{% url 'home' %}">Brain Lesion Detector</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                    <div class="d-flex justify-content-end collapse navbar-collapse" id="navbarNavDropdown">
-                        <ul class="navbar-nav">             
+                    <div class="d-flex justify-content-end collapse navbar-collapse" id="navbarSupportedContent">
+                      
+                        {% if user.is_authenticated %}
+                          <ul class="navbar-nav">             
                             <li class="nav-item">
                               <a class="nav-link" href="{% url 'diagnostic' 'new' %}">Diagnosticar</a>
                             </li>
-                        </ul>
-                        <ul class="navbar-nav">             
-                            <li class="nav-item">
-                              <a class="nav-link" href="{% url 'listDiagnostic' %}">Listar</a>
+                          </ul>
+                          {% if user.is_admin %}
+                            <ul class="navbar-nav">             
+                              <li class="nav-item">
+                                <a class="nav-link" href="{% url 'listDiagnostic' %}">Listar</a>
+                              </li>
+                            </ul>
+                            <ul class="navbar-nav">             
+                              <li class="nav-item">
+                                <a class="nav-link" href="{% url 'listUser' %}">Usuarios</a>
+                              </li>
+                            </ul>
+                          {% else %}
+                            <ul class="navbar-nav">             
+                              <li class="nav-item">
+                                <a class="nav-link" href="{% url 'list_only_user' user.id %}">Listar</a>
+                              </li>
+                            </ul>
+                          {% endif %}
+                          <ul class="navbar-nav">             
+                            <li class="nav-item dropdown">
+                              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">{{user.username}} |  
+                              {% if user.is_admin %}
+                                Admin
+                              {% else %}
+                                Médico
+                              {% endif %}</a>
+                              
+                              <ul class="dropdown-menu bg-dark" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item text-white" href="{% url 'logout' %}">Logout</a></li>
+                              </ul>
                             </li>
                         </ul>
-                        <ul class="navbar-nav">             
-                          <li class="nav-item">
-
-                            <a class="nav-link" href="{% url 'list_only_user' user.id %}">Listar</a>
-                          </li>
-                        </ul>
-                        <ul class="navbar-nav">             
-                          <li class="nav-item">
-                            <a class="nav-link" href="{% url 'listUser' %}">Usuarios</a>
-                          </li>
-                        </ul>
-                        
-                        <ul class="navbar-nav">             
-                            <li class="nav-item">
-                              <a class="nav-link" href="{% url 'logout' %}">Log out</a>
-                            </li>
-                        </ul>
+                        {% endif %}
+                                     
                     </div>
                 </nav>
             </section> 
@@ -49,17 +63,17 @@
   {% endif %} -->
 
 
-  <div class="row py-3">
+  <div class="row p-3">
       <!--div class="col-1">
           <label class="switch mt-5 mx-4">
             <input id="toggle-mask" type="checkbox" class="default">
             <span class="slider round"></span>
           </label>
       </div-->
-      <div class="col-8">
+      <div class="col-7 col-xl-7">
           <div class="papaya" data-params="params"></div>
       </div>
-      <div class="col-4">
+      <div class="col-5 col-xl-5">
 
         <div class="row">
           <div class="col-12 col-xl-12 d-flex justify-content-center align-items-center">
@@ -67,17 +81,19 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-2 col-xl-2"></div>
-            <div class="col-8 col-xl-8 d-flex justify-content-center align-items-center">
-              
-              <p class="text-justify">Bienvenidos, esta aplicaciòn permite segmentar lesiones producto de ACV (Accidente Cerebrovascular) y determinar la clasificaciòn
-              de la enfermedad cerebrovascular como: MCA o Lacunar. Para realizar esto el usuario tendrà que cargar un archivo MRI en formato NIfTI (.nii, nii.gz)
-              y como resultado el usuario visualizarà el segmento generado junto con la imagen previamente cargada, si se detectò un lesiòn ACV. EL usuario puede guardar estos 
-              resultados, si aprueba que son correctos, caso contrario, serà dirigido a un formulario donde podrà
-              colocar su punto de vista sobre la informaciòn presentada por esta herramienta.</p>
-                  
+          <div class="col-12 col-xl-12">
+            <p>Bienvenidos, esta aplicación permite segmentar lesiones producto de ACV (Accidente Cerebrovascular) y determinar el tipo 
+              de infarto cerebral como: MCA o Lacunar.</p>
+           
+            <p><span>1.- </span>Cargar imagen MRI tipo <span>T1</span> con extensión <span>.nii</span> 
+            o <span>.nii.gz</span> .</p>
+            <p><span>2.- </span>Click en boton <span>Segmentar y Diagnosticar</span>.</p>
+
+            <!--<p><span class="fw-bold">3.- </span>Observar los resultados presentados.</p>-->
+            <p><span>3.- </span><span>Aprobar</span> o <span>Rechazar</span> el diagnóstico provisto por la aplicación. En caso de Rechazar deberá proveer un diagnóstico adicional.</p> 
+            
           </div>
-          <div class="col-2 col-xl-2"></div>
+          
         </div>
            
         {% include 'sub/cargarMRI.html' %}
