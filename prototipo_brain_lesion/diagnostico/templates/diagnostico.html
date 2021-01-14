@@ -79,5 +79,17 @@
             e.preventDefault();
         });
 
+        {% if messages %}
+            {% for message in messages %}
+                var message = "{{ message }}";
+                if (message === "success") {
+                    Swal.fire({
+                        icon: 'success',
+                        text: 'Diagnóstico guardado exitósamente.',
+                    })
+                }
+            {% endfor %}
+        {% endif %}
+
     </script>
 {% endblock %}
