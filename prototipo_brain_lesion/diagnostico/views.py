@@ -107,7 +107,7 @@ class CreateUsuario(CreateView):
 
 class UpdateUsuario(UpdateView):
     model = Usuario
-    template_name = "crearUsuario.html"
+    template_name = "updateUsuario.html"
     form_class = UsuarioForm
     success_url = reverse_lazy('listUser')
      

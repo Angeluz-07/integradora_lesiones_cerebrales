@@ -9,6 +9,6 @@ urlpatterns = [
     path('listar/',ListarDiagnostico.as_view(),name='listDiagnostic'),
     path('file/<str:file_name>',serve_file, name='serve_file'),
     path('usuarios/',ListarUsuario.as_view(), name='listUser'),
-    path('usuario/crear',CreateUsuario.as_view(), name='create_user'),
-    path('update/<int:pk>',UpdateUsuario.as_view(), name='update_user'),
+    path('usuarios/create',CreateUsuario.as_view(), name='create_user'),
+    path('usuarios/update/<int:pk>',UpdateUsuario.as_view(), name='update_user'),
 ]
