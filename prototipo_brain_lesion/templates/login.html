@@ -1,23 +1,37 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block content %}
-<div class="row p-3">
+<div class="d-flex justify-content-center align-items-center vh-100">
+<div class="row p-2 m-3">
   <div class="col-12 col-xl-12">
-    <h4 class="text-center">Log In</h4>
+    <img src="{% static 'img/logoBrain.png' %}" alt="">
   </div>
 </div>
-<div class="row p-1">
+
+<div class="row p-1 m-3">
   <div class="col-12 col-xl-12">
-    <form class="d-flex justify-content-center align-items-center" method="POST">
+    <form  method="POST">
       {% csrf_token %}
+      <div class="p-1">
+        <h4 class="text-center">Log In</h4>
+      </div>
       
-          <div class="row p-1">
-            <div class="col-12 col-xl-12">
-              {{ form.as_p }}
-              <button type="submit" class="btn btn-success">Login</button>
-            </div>
-          </div>
+      <div class="p-1">
+        <label class="fw-bold">Username:</label>
+        <input class="form-control" name="username" type="text" required> 
+      </div>
+
+      <div class="p-1">
+        <label class="fw-bold">Password:</label>
+        <input class="form-control" name="password" type="password" required>   
+      </div>
+
+      <div class="row p-1">
+        <button type="submit" class="btn btn-primary">Login</button> 
+      </div>
+                     
     </form>
   </div>
+</div>
 </div>
 {% endblock %} 
