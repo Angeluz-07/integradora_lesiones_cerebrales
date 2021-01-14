@@ -1,4 +1,4 @@
-from diagnostico.models import Diagnostico
+from diagnostico.models import Diagnostico, Usuario
 from django import forms
 
 class DiagnosticoForm(forms.ModelForm):
@@ -27,4 +27,24 @@ class DiagnosticoForm(forms.ModelForm):
             'aprobado':forms.CheckboxInput(),
             'usuario':forms.Select(),
         }  
+
+class UsuarioForm(forms.ModelForm):
+    
+    class Meta:
+        model = Usuario
+        fields = [
+            'username',
+            'first_name',
+            'last_name',
+            'password',
+            'is_admin',
+        ]
+
+        widgets = {
+            'username':forms.TextInput(),
+            'first_name':forms.TextInput(),
+            'last_name':forms.TextInput(),
+            'password':forms.TextInput(),
+            'is_admin':forms.CheckboxInput(),
+        }
              

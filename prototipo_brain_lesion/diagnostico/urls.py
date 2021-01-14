@@ -1,5 +1,5 @@
 from django.urls import path
-from diagnostico.views import diagnostic, serve_file, save_diagnostic, ListarDiagnostico
+from diagnostico.views import diagnostic, serve_file, save_diagnostic, ListarDiagnostico, ListarUsuario
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import TemplateView 
 urlpatterns = [  
@@ -8,4 +8,5 @@ urlpatterns = [
     path('save/',save_diagnostic,name='save_diagnostic'),
     path('listar/',ListarDiagnostico.as_view(),name='listDiagnostic'),
     path('file/<str:file_name>',serve_file, name='serve_file'),
+    path('usuarios/',ListarUsuario.as_view(), name='listUser'),
 ]

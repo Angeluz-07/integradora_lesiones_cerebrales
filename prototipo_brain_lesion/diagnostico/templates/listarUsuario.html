@@ -1,0 +1,56 @@
+{% extends "home.html" %}
+
+{% block content %}
+
+<div class="row p-3">
+    <div class="col-6 col-xl-6 d-flex justify-content-end">
+        <h5>Usuarios</h5>
+    </div>
+    <div class="col-6 col-xl-6 d-flex justify-content-end">
+        <a class="btn btn-success" href="#">Crear usuario</a>
+    </div>
+</div>
+
+<div class="row p-3">
+    <div class="col-12 col-xl-12">
+        <table class="table table-hover table-bordered table-sm" id="dataTable">
+            <thead>
+                <tr class="text-center">
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Nombre de usuario</th>
+                    <th>Rol</th>
+                    <th>Acciones</th>                        
+                </tr>
+            </thead>
+            <tbody>
+                {% if usuarios %}
+                {% for usuario in usuarios %}
+                <tr>
+                    <td>{{usuario.nombre}}</td>
+                    <td>{{usuario.apellido}}</td>
+                    <td>{{usuario.username}}</td>
+                    <td>
+                        {% if usuario.is_admin %}
+                          Administrador
+                        {% else %}
+                          Médico
+                        {% endif %}
+                    </td>
+                    <td class="text-center">
+                      <a class="btn btn-primary" href="#">Actualizar</a>
+                      <a class="btn btn-danger" href="#">Eliminar</a>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <div class="row p-4 justify-content-center">
+                    <h5 class="text-center col-12 col-sm-12 col-xl-12">No hay ningun registro disponible</h5>
+                </div>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}
