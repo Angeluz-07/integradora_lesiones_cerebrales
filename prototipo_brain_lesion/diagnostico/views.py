@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.conf import settings
-from django.http import FileResponse
+from django.http import FileResponse,  HttpResponseBadRequest, JsonResponse
 from django.core.files.storage import FileSystemStorage
 from diagnostico.forms import DiagnosticoForm
 from diagnostico.models import Usuario, Diagnostico
@@ -36,6 +36,23 @@ def generate_mask(xpath, output_path):
     print("[5] Guardando segmento...")
     sitk.WriteImage(output, output_path)
 
+
+def preload_file(request):
+    if request.method == 'POST' and request.FILES['fileMRI']:
+        fileMRI = request.FILES['fileMRI']
+        mri_file_name = fileMRI.name
+
+        print('Guardando archivo...')
+        remove_file_if_exists(mri_file_name)
+        FileSystemStorage().save(mri_file_name, fileMRI)
+        print('Archivo guardado :', f'{mri_file_name}')
+
+        context = {
+            'original': mri_file_name,
+        }
+        return JsonResponse(context)
+    else:
+        return HttpResponseBadRequest('Only POST supported')
 
 def diagnostic(request, type_:str):
     if type_ == 'new' and request.method == 'POST' and request.FILES['fileMRI']:
