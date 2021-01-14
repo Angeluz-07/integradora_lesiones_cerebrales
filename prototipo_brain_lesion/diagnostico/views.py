@@ -5,6 +5,7 @@ from django.http import FileResponse,  HttpResponseBadRequest, JsonResponse
 from django.core.files.storage import FileSystemStorage
 from diagnostico.forms import DiagnosticoForm, UsuarioForm
 from diagnostico.models import Usuario, Diagnostico
+from django.contrib import messages
 import os
 from django.views.generic import ListView, CreateView, UpdateView
 from diagnostico.segmentation import model as segmentation_model
@@ -116,6 +117,7 @@ def save_diagnostic(request):
         form=DiagnosticoForm(request.POST)
         if form.is_valid():
             diagnostico = form.save()
+            messages.info(request, 'success')
             return redirect('diagnostic_read', id=diagnostico.id)
         else:
             form=DiagnosticoForm()           
