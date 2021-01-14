@@ -1,7 +1,12 @@
 {% extends "home.html" %}
 
 {% block content %}
-<div class="row justify-content-center">
+<div class="row p-2">
+    <div class="col-12 col-xl-12">
+        <h5 class="text-center">Lista Diagnóstico Realizados</h5>
+    </div>
+</div>
+<div class="row justify-content-center p-2">
     <div class="col-12 col-md-10 col-lg-12">
         <div class="align-items-center">
             <table class="table table-hover table-bordered table-sm" id="dataTable">
@@ -12,8 +17,7 @@
                         <th>Clase Corrección</th>
                         <th>Descripción</th>
                         <th>Descripción Corrección</th>
-                        <th>Estado</th>
-                        <th>Acciones</th>
+                        <th>Archivos</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -25,13 +29,6 @@
                     <td>{{diagnostico.clase_Correccion}}</td>
                     <td>{{diagnostico.descripcion}}</td>                    
                     <td>{{diagnostico.descripcion_Correccion}}</td>
-                    <td>
-                        {% if diagnostico.aprobado %}
-                          Aprobado
-                        {% else %}
-                          Rechazado
-                        {% endif %}
-                    </td>
                     <td class="text-center">
                       <a href="{% url 'serve_file' diagnostico.ruta_Imagen %}">MRI</a>
                       <a href="{% url 'serve_file' diagnostico.ruta_ImagenSegmentada %}">MASK</a>

@@ -105,9 +105,14 @@ def save_diagnostic(request):
 
 class ListarDiagnostico(ListView):
     model = Diagnostico
-    template_name = "listarDiagnostico.html"
+    template_name = "listarDiagnosticoAdmin.html"
     context_object_name = 'diagnosticos'
     queryset = Diagnostico.objects.order_by('id')
+
+def diagnostic_only_user_list(request,pk):
+    diagnostico = Diagnostico.objects.filter(usuario=pk)
+    context = {'diagnosticos':diagnostico}
+    return render(request,'listarDiagnosticoMedico.html',context)
 
 class ListarUsuario(ListView):
     model = Usuario
@@ -127,4 +132,4 @@ class UpdateUsuario(UpdateView):
     template_name = "updateUsuario.html"
     form_class = UsuarioForm
     success_url = reverse_lazy('listUser')
-     
+
