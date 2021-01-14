@@ -18,7 +18,12 @@
         {% elif view_type == 'update' %}
             {% include 'sub/update_diagnostic_form.html' %}
         {% elif view_type == 'read' %}
-            {% include 'sub/read_diagnostic_form.html' %}
+
+            {% if aprobado == True %}
+                {% include 'sub/read_diagnostic_form_created.html' %}
+            {% elif aprobado == False %}
+                {% include 'sub/read_diagnostic_form_updated.html' %}
+            {% endif %}
         {% endif%}
         
     </div>        

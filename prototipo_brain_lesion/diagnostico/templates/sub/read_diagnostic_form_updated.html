@@ -11,7 +11,7 @@
         <div class="row my-2">
             <div class="col-12 col-xl-12">
                 <label class="form-label">Imagen MRI :</label>
-                <input class="form-control form-control-sm" type="text" name="ruta_Imagen" value={{original}}>
+                <input class="form-control form-control-sm" type="text" name="ruta_Imagen" value={{original}} disabled>
             </div>
         </div>
         <div class="row" hidden>
@@ -23,13 +23,26 @@
         <div class="row my-2">
             <div class="col-12 col-xl-12">
                 <label class="form-label">Tipo de infarto :</label>
-                <input class="form-control form-control-sm" type="text" name="clase" value={{clase_pred}}>
+                <input class="form-control form-control-sm" type="text" name="clase" value={{clase_pred}} disabled>
             </div>
         </div>
         <div class="row my-2">
             <div class="col-12 col-xl-12">
-                <label class="form-label">Descripción :</label>
-                <textarea class="form-control" name="descripcion" cols="70" rows="5" >{{descripcion}}</textarea>
+                <label class="form-label">Tipo de infarto corregido:</label>
+                <input class="form-control form-control-sm" type="text" name="clase" value={{clase_correccion}} disabled>
+            </div>
+        </div>
+        <div class="row my-2">
+            <div class="col-12 col-xl-12">
+                <label class="form-label">Descripción del modelo:</label>
+                <textarea class="form-control" name="descripcion" cols="70" rows="5" disabled>{{descripcion}}</textarea>
+                <!--p class="text-center">Puede colocar un comentario sobre el resultado</p-->
+            </div>
+        </div>
+        <div class="row my-2">
+            <div class="col-12 col-xl-12">
+                <label class="form-label">Descripción del medico:</label>
+                <textarea class="form-control" name="descripcion" cols="70" rows="5" disabled>{{descripcion_correccion}}</textarea>
                 <!--p class="text-center">Puede colocar un comentario sobre el resultado</p-->
             </div>
         </div>

@@ -103,7 +103,10 @@ def diagnostic_read(request, id:str):
         'original': diagnostic.ruta_Imagen,
         'mask': diagnostic.ruta_ImagenSegmentada,
         'clase_pred': diagnostic.clase,
+        'clase_correccion' : diagnostic.clase_Correccion,
         'descripcion': diagnostic.descripcion,
+        'descripcion_correccion' : diagnostic.descripcion_Correccion,
+        'aprobado' : diagnostic.aprobado,
         'view_type' : 'read'
     }
     return render(request,'diagnostico.html',context=context)
@@ -112,8 +115,8 @@ def save_diagnostic(request):
     if request.method == 'POST':
         form=DiagnosticoForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('diagnostic',type_='new')
+            diagnostico = form.save()
+            return redirect('diagnostic_read', id=diagnostico.id)
         else:
             form=DiagnosticoForm()           
     return render(request,'diagnostico.html',{'form':form})
