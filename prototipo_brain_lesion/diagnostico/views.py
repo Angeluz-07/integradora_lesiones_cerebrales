@@ -1,11 +1,12 @@
 from django.shortcuts import render,redirect
+from django.urls import reverse_lazy
 from django.conf import settings
 from django.http import FileResponse,  HttpResponseBadRequest, JsonResponse
 from django.core.files.storage import FileSystemStorage
-from diagnostico.forms import DiagnosticoForm
+from diagnostico.forms import DiagnosticoForm, UsuarioForm
 from diagnostico.models import Usuario, Diagnostico
 import os
-from django.views.generic import ListView 
+from django.views.generic import ListView, CreateView, UpdateView
 from diagnostico.segmentation import model as segmentation_model
 from diagnostico.segmentation import preprocess_ximg, postprocess_pred
 from diagnostico.classification import model as classification_model
@@ -106,4 +107,24 @@ class ListarDiagnostico(ListView):
     model = Diagnostico
     template_name = "listarDiagnostico.html"
     context_object_name = 'diagnosticos'
-    queryset=Diagnostico.objects.order_by('id')
+    queryset = Diagnostico.objects.order_by('id')
+
+class ListarUsuario(ListView):
+    model = Usuario
+    template_name = "listarUsuario.html"
+    context_object_name = "usuarios"
+    queryset = Usuario.objects.order_by('id')
+
+
+class CreateUsuario(CreateView):
+    model = Usuario
+    template_name = "crearUsuario.html"
+    form_class = UsuarioForm
+    success_url = reverse_lazy('listUser')
+
+class UpdateUsuario(UpdateView):
+    model = Usuario
+    template_name = "updateUsuario.html"
+    form_class = UsuarioForm
+    success_url = reverse_lazy('listUser')
+     

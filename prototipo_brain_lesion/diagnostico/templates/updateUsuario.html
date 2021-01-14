@@ -1,0 +1,63 @@
+{% extends "home.html" %}
+
+{% block content %}
+<div class="row p-1 m-3">
+    <div class="col-12 col-xl-12">
+      <form method="POST">
+        {% csrf_token %}
+        <div class="row p-1">
+          <h4 class="text-center">Actualizar Usuario</h4>
+        </div>
+        
+        <div class="row p-1 d-flex justify-content-center align-items-center">
+           <div class="col-7 col-xl-7">
+          <label class="fw-bold">Username:</label>
+          {{form.username}}
+          </div> 
+        </div>
+
+        <div class="row p-1 d-flex justify-content-center align-items-center">
+            <div class="col-7 col-xl-7">
+            <label class="fw-bold">Nombre:</label>
+            {{form.first_name}} 
+            </div>
+        </div>
+
+        <div class="row p-1 d-flex justify-content-center align-items-center">
+            <div class="col-7 col-xl-7">
+            <label class="fw-bold">Apellido:</label>
+            {{form.last_name}}
+            </div> 
+        </div>
+  
+        <div class="row p-1 d-flex justify-content-center align-items-center">
+          <div class="col-7 col-xl-7">  
+          <label class="fw-bold">Password:</label>
+          <input class="form-control" type="text" name="password" required>
+          </div>  
+        </div>
+
+        <div class="row p-1">
+            
+            
+            <div class="col-6 col-xl-6 d-flex justify-content-end">
+                <label class="fw-bold">Administrador:</label>
+            </div> 
+            <div class="col-6 col-xl-6 d-flex justify-content-start">  
+              {{form.is_admin}}
+            </div>   
+        </div>
+
+        <div class="row p-3">
+            <div class="col-6 col-xl-6 d-flex justify-content-end">
+                <button type="submit" class="btn btn-primary">Actualizar</button>
+            </div> 
+            <div class="col-6 col-xl-6 d-flex justify-content-start">  
+                <a class="btn btn-danger" href="{% url 'listUser' %}">Cancelar</a>
+            </div>
+        </div>
+                       
+      </form>
+    </div>
+  </div>     
+{% endblock %}
