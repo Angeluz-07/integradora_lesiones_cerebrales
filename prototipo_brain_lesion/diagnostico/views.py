@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django.urls import reverse_lazy
 from django.conf import settings
-from django.http import FileResponse
+from django.http import FileResponse,  HttpResponseBadRequest, JsonResponse
 from django.core.files.storage import FileSystemStorage
 from diagnostico.forms import DiagnosticoForm, UsuarioForm
 from diagnostico.models import Usuario, Diagnostico
@@ -11,7 +11,7 @@ from diagnostico.segmentation import model as segmentation_model
 from diagnostico.segmentation import preprocess_ximg, postprocess_pred
 from diagnostico.classification import model as classification_model
 from diagnostico.classification import preprocess as classification_preprocess
-from diagnostico.classification import probs, predicted_class
+from diagnostico.classification import probs_formatted, predicted_class
 
 import SimpleITK as sitk
 
@@ -38,6 +38,23 @@ def generate_mask(xpath, output_path):
     sitk.WriteImage(output, output_path)
 
 
+def preload_file(request):
+    if request.method == 'POST' and request.FILES['fileMRI']:
+        fileMRI = request.FILES['fileMRI']
+        mri_file_name = fileMRI.name
+
+        print('Guardando archivo...')
+        remove_file_if_exists(mri_file_name)
+        FileSystemStorage().save(mri_file_name, fileMRI)
+        print('Archivo guardado :', f'{mri_file_name}')
+
+        context = {
+            'original': mri_file_name,
+        }
+        return JsonResponse(context)
+    else:
+        return HttpResponseBadRequest('Only POST supported')
+
 def diagnostic(request, type_:str):
     if type_ == 'new' and request.method == 'POST' and request.FILES['fileMRI']:
         fileMRI = request.FILES['fileMRI']
@@ -57,15 +74,15 @@ def diagnostic(request, type_:str):
 
         print("Clasificando Lesion...")
         feature_row = classification_preprocess(mri_file_path,mask_file_path)
-        _probs = probs(classification_model, feature_row)
+        _probs_formatted = probs_formatted(classification_model, feature_row)
         _predicted_class = predicted_class(classification_model, feature_row)
-        print("Classificacion generada : ", _probs, _predicted_class)
+        print("Classificacion generada : ", _probs_formatted, _predicted_class)
 
         context = {
             'original': mri_file_name,
             'mask': mask_file_name,
             'clase_pred': _predicted_class,
-            'descripcion': _probs,
+            'descripcion': _probs_formatted,
         }
 
         request.session['diagnostic_values'] = context
