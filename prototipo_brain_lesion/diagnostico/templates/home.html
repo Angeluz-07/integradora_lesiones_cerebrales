@@ -87,6 +87,18 @@
           console.log('File loaded');
           console.log(this.files[0]);
 
+          //Validate extension file
+          var allowedExtensions = /(\.nii|\.nii\.gz)$/i;
+          var filePath = this.files[0].name;
+          if(!allowedExtensions.exec(filePath)){
+            Swal.fire({
+              icon: 'error',
+              title: 'Archivo Inválido',
+              text: 'Por favor, verifique que el archivo tenga extensión .nii o .nii.gz',
+            })
+            return false;
+          }
+
           var fd = new FormData();
           var files = this.files[0];
           fd.append('fileMRI',files);
