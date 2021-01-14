@@ -6,7 +6,7 @@ from django.core.files.storage import FileSystemStorage
 from diagnostico.forms import DiagnosticoForm, UsuarioForm
 from diagnostico.models import Usuario, Diagnostico
 import os
-from django.views.generic import ListView, CreateView 
+from django.views.generic import ListView, CreateView, UpdateView
 from diagnostico.segmentation import model as segmentation_model
 from diagnostico.segmentation import preprocess_ximg, postprocess_pred
 from diagnostico.classification import model as classification_model
@@ -105,3 +105,8 @@ class CreateUsuario(CreateView):
     form_class = UsuarioForm
     success_url = reverse_lazy('listUser')
 
+class UpdateUsuario(UpdateView):
+    model = Usuario
+    template_name = "crearUsuario.html"
+    form_class = UsuarioForm
+    success_url = reverse_lazy('listUser') 

@@ -7,7 +7,7 @@
         <h5>Usuarios</h5>
     </div>
     <div class="col-6 col-xl-6 d-flex justify-content-end">
-        <a class="btn btn-success" href="#">Crear usuario</a>
+        <a class="btn btn-success" href="{% url 'create_user' %}">Crear usuario</a>
     </div>
 </div>
 
@@ -27,8 +27,8 @@
                 {% if usuarios %}
                 {% for usuario in usuarios %}
                 <tr>
-                    <td>{{usuario.nombre}}</td>
-                    <td>{{usuario.apellido}}</td>
+                    <td>{{usuario.first_name}}</td>
+                    <td>{{usuario.last_name}}</td>
                     <td>{{usuario.username}}</td>
                     <td>
                         {% if usuario.is_admin %}
@@ -38,8 +38,7 @@
                         {% endif %}
                     </td>
                     <td class="text-center">
-                      <a class="btn btn-primary" href="#">Actualizar</a>
-                      <a class="btn btn-danger" href="#">Eliminar</a>
+                      <a class="btn btn-primary" href="{% url 'update_user' usuario.id %}">Actualizar</a>
                     </td>
                 </tr>
                 {% endfor %}

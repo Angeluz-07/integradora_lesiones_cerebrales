@@ -41,10 +41,18 @@ class UsuarioForm(forms.ModelForm):
         ]
 
         widgets = {
-            'username':forms.TextInput(),
-            'first_name':forms.TextInput(),
-            'last_name':forms.TextInput(),
-            'password':forms.TextInput(),
-            'is_admin':forms.CheckboxInput(),
+            'username':forms.TextInput(attrs={'class':'form-control'}),
+            'first_name':forms.TextInput(attrs={'class':'form-control'}),
+            'last_name':forms.TextInput(attrs={'class':'form-control'}),
+            'password':forms.TextInput(attrs={'class':'form-control'}),
+            'is_admin':forms.CheckboxInput(attrs={'class':'form-check'}),
         }
+
+    def save(self, commit=True):
+        # Save the provided password in hashed format
+        user = super(UsuarioForm, self).save(commit=False)
+        user.set_password(self.cleaned_data["password"])
+        if commit:
+            user.save()
+        return user    
              
