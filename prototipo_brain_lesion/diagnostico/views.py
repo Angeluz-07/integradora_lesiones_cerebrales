@@ -107,3 +107,8 @@ class ListarDiagnostico(ListView):
     template_name = "listarDiagnostico.html"
     context_object_name = 'diagnosticos'
     queryset=Diagnostico.objects.order_by('id')
+
+def diagnostic_only_user_list(request,pk):
+    diagnostico = Diagnostico.objects.filter(usuario=pk)
+    context = {'diagnosticos':diagnostico}
+    return render(request,'listarOnlyDiagnosticUser.html',context)

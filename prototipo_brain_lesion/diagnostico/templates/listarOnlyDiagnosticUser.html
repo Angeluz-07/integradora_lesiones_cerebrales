@@ -17,7 +17,6 @@
                         <th>Clase Corrección</th>
                         <th>Descripción</th>
                         <th>Descripción Corrección</th>
-                        <th>Usuario</th>
                         <th>Archivos</th>
                     </tr>
                 </thead>
@@ -30,7 +29,6 @@
                     <td>{{diagnostico.clase_Correccion}}</td>
                     <td>{{diagnostico.descripcion}}</td>                    
                     <td>{{diagnostico.descripcion_Correccion}}</td>
-                    <td>{{diagnostico.usuario}}</td>
                     <td class="text-center">
                       <a href="{% url 'serve_file' diagnostico.ruta_Imagen %}">MRI</a>
                       <a href="{% url 'serve_file' diagnostico.ruta_ImagenSegmentada %}">MASK</a>
