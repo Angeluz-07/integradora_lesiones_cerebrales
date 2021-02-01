@@ -16,7 +16,7 @@ from diagnostico.classification import probs_formatted, predicted_class
 from django.contrib.auth import update_session_auth_hash
 import SimpleITK as sitk
 from django.contrib.auth.decorators import login_required
-
+from django.contrib.messages.views import SuccessMessageMixin
 
 def serve_file(request, file_name):
     path = os.path.join(settings.MEDIA_ROOT, file_name)
@@ -143,11 +143,12 @@ class ListarUsuario(ListView):
     queryset = Usuario.objects.order_by('id')
 
 
-class CreateUsuario(CreateView):
+class CreateUsuario(SuccessMessageMixin,CreateView):
     model = Usuario
     template_name = "crearUsuario.html"
     form_class = UsuarioForm
-    success_url = reverse_lazy('listUser')
+    success_url = reverse_lazy('create_user')
+    success_message = 'success'
 
 @login_required
 def update_usuario(request,id):
@@ -158,7 +159,8 @@ def update_usuario(request,id):
     else:
         form = UsuarioForm(request.POST,instance=usuario)
         if form.is_valid():
-            form.save()
+            usuario=form.save()
             update_session_auth_hash(request,usuario)
-        return redirect('listUser')   
+            messages.info(request, 'success')
+        return redirect('update_user',id=usuario.id)   
     return render(request,'updateUsuario.html',{'form':form})

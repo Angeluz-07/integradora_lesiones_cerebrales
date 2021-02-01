@@ -53,11 +53,31 @@
                 <button type="submit" class="btn btn-primary">Actualizar</button>
             </div> 
             <div class="col-6 col-xl-6 d-flex justify-content-start">  
-                <a class="btn btn-danger" href="{% url 'listUser' %}">Cancelar</a>
+                <a class="btn btn-danger" href="{% url 'listUser' %}">Regresar</a>
             </div>
         </div>
                        
       </form>
     </div>
   </div>     
+{% endblock %}
+
+{% block specific_scripts %}
+<script type="text/javascript">
+
+{% if messages %}
+    {% for message in messages %}
+        var message = "{{ message }}";
+        console.log(message);
+        if (message === "success") {
+            Swal.fire({
+                icon: 'success',
+                text: 'Usuario actualizado exitosamente.',
+            })
+        }
+    {% endfor %}
+{% endif %}
+
+</script>
+
 {% endblock %}
