@@ -7,7 +7,7 @@ from diagnostico.forms import DiagnosticoForm, UsuarioForm
 from diagnostico.models import Usuario, Diagnostico
 from django.contrib import messages
 import os
-from django.views.generic import ListView, CreateView, UpdateView
+from django.views.generic import ListView, CreateView
 from diagnostico.segmentation import model as segmentation_model
 from diagnostico.segmentation import preprocess_ximg, postprocess_pred
 from diagnostico.classification import model as classification_model
@@ -16,7 +16,7 @@ from diagnostico.classification import probs_formatted, predicted_class
 from django.contrib.auth import update_session_auth_hash
 import SimpleITK as sitk
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.hashers import make_password
+
 
 def serve_file(request, file_name):
     path = os.path.join(settings.MEDIA_ROOT, file_name)
