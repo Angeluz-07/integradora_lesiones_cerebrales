@@ -61,3 +61,27 @@
     </div>
   </div>     
 {% endblock %}
+
+{% block specific_scripts %}
+<script type="text/javascript">
+
+  $('#read_form').on('submit', function(e){
+    e.preventDefault();
+});
+
+{% if messages %}
+    {% for message in messages %}
+        var message = "{{ message }}";
+        console.log(message);
+        if (message === "success") {
+            Swal.fire({
+                icon: 'success',
+                text: 'Usuario actualizado exitósamente.',
+            })
+        }
+    {% endfor %}
+{% endif %}
+
+</script>
+
+{% endblock %}
