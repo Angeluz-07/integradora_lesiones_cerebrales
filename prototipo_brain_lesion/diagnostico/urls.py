@@ -1,6 +1,5 @@
 from django.urls import path
-from diagnostico.views import diagnostic, serve_file, preload_file, save_diagnostic, ListarDiagnostico,  diagnostic_only_user_list
-from diagnostico.views import diagnostic, serve_file, preload_file, save_diagnostic, ListarDiagnostico,  diagnostic_only_user_list, ListarUsuario, CreateUsuario, UpdateUsuario, diagnostic_read
+from diagnostico.views import diagnostic, serve_file, preload_file, save_diagnostic, ListarDiagnostico,  diagnostic_only_user_list, ListarUsuario, CreateUsuario, update_usuario, diagnostic_read
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import TemplateView 
 urlpatterns = [  
@@ -14,5 +13,5 @@ urlpatterns = [
     path('listar/usuario/<int:pk>',diagnostic_only_user_list, name='list_only_user'),
     path('usuarios/',ListarUsuario.as_view(), name='listUser'),
     path('usuarios/create',CreateUsuario.as_view(), name='create_user'),
-    path('usuarios/update/<int:pk>',UpdateUsuario.as_view(), name='update_user'),
+    path('usuarios/update/<int:id>',update_usuario, name='update_user'),
 ]

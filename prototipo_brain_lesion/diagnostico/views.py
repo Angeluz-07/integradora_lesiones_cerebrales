@@ -7,14 +7,16 @@ from diagnostico.forms import DiagnosticoForm, UsuarioForm
 from diagnostico.models import Usuario, Diagnostico
 from django.contrib import messages
 import os
-from django.views.generic import ListView, CreateView, UpdateView
+from django.views.generic import ListView, CreateView
 from diagnostico.segmentation import model as segmentation_model
 from diagnostico.segmentation import preprocess_ximg, postprocess_pred
 from diagnostico.classification import model as classification_model
 from diagnostico.classification import preprocess as classification_preprocess
 from diagnostico.classification import probs_formatted, predicted_class
-
+from django.contrib.auth import update_session_auth_hash
 import SimpleITK as sitk
+from django.contrib.auth.decorators import login_required
+
 
 def serve_file(request, file_name):
     path = os.path.join(settings.MEDIA_ROOT, file_name)
@@ -147,9 +149,16 @@ class CreateUsuario(CreateView):
     form_class = UsuarioForm
     success_url = reverse_lazy('listUser')
 
-class UpdateUsuario(UpdateView):
-    model = Usuario
-    template_name = "updateUsuario.html"
-    form_class = UsuarioForm
-    success_url = reverse_lazy('listUser')
-
+@login_required
+def update_usuario(request,id):
+    usuario = Usuario.objects.get(id=id)
+    if request.method == 'GET':
+          form = UsuarioForm(instance=usuario)
+         
+    else:
+        form = UsuarioForm(request.POST,instance=usuario)
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request,usuario)
+        return redirect('listUser')   
+    return render(request,'updateUsuario.html',{'form':form})
