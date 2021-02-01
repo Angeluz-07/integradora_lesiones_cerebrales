@@ -15,9 +15,9 @@ services:
     build: .
     command: sh -c "python prototipo_brain_lesion/manage.py makemigrations &&
                     python prototipo_brain_lesion/manage.py migrate &&
-                    python prototipo_brain_lesion/manage.py runserver 0.0.0.0:8000"
+                    python prototipo_brain_lesion/manage.py runserver 0.0.0.0:9000"
     ports:
-      - "8000:8000"
+      - "9000:9000"
     environment:
       - DATABASE_ENGINE=${DATABASE_ENGINE}
       - DATABASE_NAME=${DATABASE_NAME}

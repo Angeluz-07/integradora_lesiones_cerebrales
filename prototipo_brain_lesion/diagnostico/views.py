@@ -13,10 +13,11 @@ from diagnostico.segmentation import preprocess_ximg, postprocess_pred
 from diagnostico.classification import model as classification_model
 from diagnostico.classification import preprocess as classification_preprocess
 from diagnostico.classification import probs_formatted, predicted_class
-from django.contrib.auth import update_session_auth_hash
+from diagnostico.normalization import normalize
 import SimpleITK as sitk
 from django.contrib.auth.decorators import login_required
 from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib.auth import update_session_auth_hash
 
 def serve_file(request, file_name):
     path = os.path.join(settings.MEDIA_ROOT, file_name)
@@ -68,8 +69,12 @@ def diagnostic(request, type_:str):
         FileSystemStorage().save(mri_file_name, fileMRI)
         print('Archivo guardado :', f'{mri_file_name}')
 
+        print('Registro y estandarizacion')
+        normalized_file_name = normalize(settings.MEDIA_ROOT, mri_file_name)
+        print('Imagen registrada y estandarizada : ', normalized_file_name)
+
         print("Segmentando Lesion...")
-        mri_file_path = os.path.join(settings.MEDIA_ROOT, mri_file_name)
+        mri_file_path = os.path.join(settings.MEDIA_ROOT, normalized_file_name)
         mask_file_name = mri_file_name.split('.')[0] +'_maskGenerated' + '.nii.gz'
         mask_file_path = os.path.join(settings.MEDIA_ROOT, mask_file_name)
         #generate_mask(mri_file_path, mask_file_path)
@@ -83,6 +88,7 @@ def diagnostic(request, type_:str):
 
         context = {
             'original': mri_file_name,
+            'normalized' : normalized_file_name,
             'mask': mask_file_name,
             'clase_pred': _predicted_class,
             'descripcion': _probs_formatted,
@@ -102,8 +108,10 @@ def diagnostic(request, type_:str):
 def diagnostic_read(request, id:str):
     from .models import Diagnostico
     diagnostic = Diagnostico.objects.get(id=id)
+    normalized = diagnostic.ruta_Imagen.split('.')[0] + '_normalized.nii.gz'
     context = {
         'original': diagnostic.ruta_Imagen,
+        'normalized' : normalized,
         'mask': diagnostic.ruta_ImagenSegmentada,
         'clase_pred': diagnostic.clase,
         'clase_correccion' : diagnostic.clase_Correccion,
