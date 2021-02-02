@@ -55,8 +55,15 @@ def get_feature_vector(img : sitk.Image):
   ]
   return [f(img) for f in fn]
 
+mni152_T1_path = os.path.join(
+    settings.BRAIN_TEMPLATES_DIR, 
+    'mni_icbm152_t1_tal_nlin_sym_09a.nii'
+)
+mni152_T1 = sitk.ReadImage(mni152_T1_path, sitk.sitkFloat32)
+
 def preprocess(xpath, ypath):
     ximg = sitk.ReadImage(xpath, sitk.sitkFloat32)
+    ximg = sitk.HistogramMatching(ximg, mni152_T1)
     yimg = sitk.ReadImage(ypath, sitk.sitkFloat32)
     yimg = sitk.Divide(yimg, 255.0) # because mask comes with values in {255,0}
     

@@ -255,8 +255,17 @@ mni152_brain_mask_path = os.path.join(
 )
 mni152_brain_mask = sitk.ReadImage(mni152_brain_mask_path, sitk.sitkFloat32)
 
+
+mni152_T1_path = os.path.join(
+    settings.BRAIN_TEMPLATES_DIR, 
+    'mni_icbm152_t1_tal_nlin_sym_09a.nii'
+)
+
+mni152_T1 = sitk.ReadImage(mni152_T1_path, sitk.sitkFloat32)
+
 def preprocess_ximg(ximg: sitk.Image, flipped = False) -> np.ndarray:
-    x3d = sitk.Multiply(ximg, mni152_brain_mask) # mask brain
+    x3d = sitk.HistogramMatching(ximg, mni152_T1)
+    x3d = sitk.Multiply(x3d, mni152_brain_mask) # mask brain
     x3d = sitk.CurvatureAnisotropicDiffusion(x3d, conductanceParameter=1, numberOfIterations=1) # denoise a bit
 
     if flipped:

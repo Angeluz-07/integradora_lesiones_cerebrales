@@ -51,8 +51,8 @@
 
         var params = [];
         params['showControlBar'] = true;
-        {% if normalized and mask %}
-            var URL_ORIGINAL = "{% url 'serve_file' normalized %}";
+        {% if registered and mask %}
+            var URL_ORIGINAL = "{% url 'serve_file' registered %}";
             var URL_MASK = "{% url 'serve_file' mask %}";
             
             console.log(URL_ORIGINAL);
