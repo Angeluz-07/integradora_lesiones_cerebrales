@@ -1,5 +1,5 @@
-# integradora_lesiones_cerebrales
-Proyecto de materia integradora. Detección y análisis de lesiones cerebrales en imagenes MRI mediante el uso de deep learning.
+# Brain Lesion Detector
+_Código fuente del proyecto de materia integradora **Detección de lesiones cerebrales mediante análisis de imagenes MRI(Magnetic Resonance Imaging) mediante el uso de deep learning**. Proyecto previo a la obtención del título de Ingeniero en Ciencias Computacionales de la ESPOL(Escuela Superior Politécnica del Litoral) llevado a cabo en el segundo término 2020._
 
 ## Correr aplicación (Windows OS)
 1. Iniciar el ambiente virtual python.
